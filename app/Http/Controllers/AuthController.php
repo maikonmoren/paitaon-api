@@ -27,7 +27,8 @@ class AuthController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["status" => "error","message" => $validator->errors()],403);
+            $response = ResponseHelper::convertValidation($validator->errors()->getMessages());
+            return response()->json($response,400);
         }
 
         $credentials = $request->only('email', 'password');
@@ -44,16 +45,19 @@ class AuthController extends Controller
     }
 
     public function register(Request $request){
+
         $validator = Validator::make($request->all(),[
             "name" => "required",
             "email"=> "required|unique:users|email",
             "password" => "required|confirmed",
-            "bio" => "required"
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors(),403);
+
+            $response = ResponseHelper::convertValidation($validator->errors()->getMessages());
+            return response()->json($response,400);
         }
+
 
         $user = new User($request->all());
         if($user->save()){
@@ -68,7 +72,7 @@ class AuthController extends Controller
         Auth::logout();
         return response()->json([
             'status' => 'success',
-            'message' => 'Successfully logged out',
+            'message' => 'Deslogado com sucesso',
         ]);
     }
 

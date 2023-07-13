@@ -20,11 +20,12 @@ use Illuminate\Support\Facades\Route;
 Route::prefix("auth")->group(function(){
     Route::post("login",[AuthController::class,"login"]);
     Route::post("logout",[AuthController::class,"logout"]);
+    Route::post("register",[AuthController::class , 'register']);
+    Route::post("forgot",[AuthController::class , 'register']);
 });
 
 Route::prefix("users")->group(function(){
     Route::get("me",[UserController::class , 'me']);
-    Route::post("",[AuthController::class , 'register']);
 });
 
 Route::prefix("posts")->group(function(){
